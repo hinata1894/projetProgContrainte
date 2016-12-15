@@ -47,4 +47,18 @@ for pb in open("projet04.txt").read().split("===================================
             temps_de_deplacement.append([int(x) for x in m.group(1).strip().split()])
 
 import yaml, sys
-yaml.dump(PROBLEMES, sys.stdout)
+#yaml.dump(PROBLEMES, sys.stdout)
+
+for pb in PROBLEMES:
+    for key in pb:
+        if not isinstance(pb[key], list):
+            print "int:", key, "=", pb[key]
+        else:
+            print "array [int] of var set of int: ", key, "=\n", "["
+            for elem in pb[key]:
+                sys.stdout.write("{")
+                for e in elem:
+                    sys.stdout.write(str(e))
+                    sys.stdout.write(",")
+                print "}"
+            print "]"
