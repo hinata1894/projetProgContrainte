@@ -47,4 +47,4 @@ for pb in open("projet04.txt").read().split("===================================
             temps_de_deplacement.append([int(x) for x in m.group(1).strip().split()])
 
 import yaml, sys
-yaml.dump(PROBLEMES, sys.stderr)
+yaml.dump(PROBLEMES, sys.stdout)
