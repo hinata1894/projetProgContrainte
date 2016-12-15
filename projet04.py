@@ -5,7 +5,7 @@ row = re.compile(r"^\s*\d+:\s*(.+)$")
 
 PROBLEMES = []
 
-for pb in open("reunions.txt").read().split("===============================================================================\n"):
+for pb in open("projet04.txt").read().split("===============================================================================\n"):
     pb = pb.strip()
     if not pb:
         continue
