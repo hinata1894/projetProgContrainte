@@ -46,31 +46,37 @@ for pb in open("projet04.txt").read().split("===================================
         if m:
             temps_de_deplacement.append([int(x) for x in m.group(1).strip().split()])
 
-import yaml, sys
+#import yaml, sys
 #yaml.dump(PROBLEMES, sys.stdout)
 
-for pb in PROBLEMES:
+import os
+if os.path.isdir("tests") == False:
+    os.mkdir("tests")
+
+for j in range(0, len(PROBLEMES)):
+    pb = PROBLEMES[j]
+    f = open('tests/probleme'+str(j)+'.mzn', 'w')
+    f.write('include "globals.mzn";\n')
+    tableau = ""
     for key in pb:
         if not isinstance(pb[key], list):
-            print("int:", key, "=", pb[key],";")
+            f.write("int: "+str(key)+" = "+str(pb[key])+";\n")
         else:
             if key=="TempsDeDeplacement":
-                print("array [0..NombreDeReunions, 0..NombreDeReunions] of MinTempsDeDeplacement..MaxTempsDeDeplacement:", key, "=\n", "[")
+                tableau += "array [1..NombreDeReunions, 1..NombreDeReunions] of 0..MaxTempsDeDeplacement: "+str(key)+" =\n["
             elif key=="ReunionsParAgent":
-                print("array [0..NombreDAgents, 0..NombreDeReunionsParAgent] of 0..NombreDeReunions:", key, "=\n", "[")
+                tableau += "array [1..NombreDAgents, 1..NombreDeReunionsParAgent] of 0..NombreDeReunions: "+str(key)+" =\n["
             keys = pb[key]
             for i in range(0, len(keys)-1):
                 elem = keys[i]
-                sys.stdout.write("|")
+                tableau += "|"
                 for e in range(0,len(elem)-1):
-                    sys.stdout.write(str(elem[e]))
-                    sys.stdout.write(",")
-                sys.stdout.write(str(elem[len(elem)-1]))
-                print(",")
+                    tableau += str(elem[e]) + ","
+                tableau += str(elem[len(elem)-1]) + ",\n"
             elem = keys[len(keys)-1]
-            sys.stdout.write("|")
+            tableau += "|"
             for e in range(0,len(elem)-1):
-                sys.stdout.write(str(elem[e]))
-                sys.stdout.write(",")
-            sys.stdout.write(str(elem[len(elem)-1]))
-            print("|\n];")
+                tableau += str(elem[e]) + ","
+            tableau += str(elem[len(elem)-1]) + "|];\n"
+    f.write(tableau)
+    f.closed
