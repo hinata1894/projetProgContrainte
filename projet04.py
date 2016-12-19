@@ -55,22 +55,22 @@ for pb in PROBLEMES:
             print("int:", key, "=", pb[key],";")
         else:
             if key=="TempsDeDeplacement":
-                print("array [1..NombreDeReunions] of var set of 1..NombreDeReunions:", key, "=\n", "[")
+                print("array [0..NombreDeReunions, 0..NombreDeReunions] of MinTempsDeDeplacement..MaxTempsDeDeplacement:", key, "=\n", "[")
             elif key=="ReunionsParAgent":
-                print("array [1..NombreDAgents] of var set of 1..NombreDeReunionsParAgent:", key, "=\n", "[")
+                print("array [0..NombreDAgents, 0..NombreDeReunionsParAgent] of 0..NombreDeReunions:", key, "=\n", "[")
             keys = pb[key]
             for i in range(0, len(keys)-1):
                 elem = keys[i]
-                sys.stdout.write("{")
+                sys.stdout.write("|")
                 for e in range(0,len(elem)-1):
                     sys.stdout.write(str(elem[e]))
                     sys.stdout.write(",")
                 sys.stdout.write(str(elem[len(elem)-1]))
-                print("},")
+                print(",")
             elem = keys[len(keys)-1]
-            sys.stdout.write("{")
+            sys.stdout.write("|")
             for e in range(0,len(elem)-1):
                 sys.stdout.write(str(elem[e]))
                 sys.stdout.write(",")
             sys.stdout.write(str(elem[len(elem)-1]))
-            print("}\n];")
+            print("|\n];")
