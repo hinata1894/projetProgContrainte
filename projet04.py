@@ -52,13 +52,25 @@ import yaml, sys
 for pb in PROBLEMES:
     for key in pb:
         if not isinstance(pb[key], list):
-            print "int:", key, "=", pb[key]
+            print("int:", key, "=", pb[key],";")
         else:
-            print "array [int] of var set of int: ", key, "=\n", "["
-            for elem in pb[key]:
+            if key=="TempsDeDeplacement":
+                print("array [1..NombreDeReunions] of var set of 1..NombreDeReunions:", key, "=\n", "[")
+            elif key=="ReunionsParAgent":
+                print("array [1..NombreDAgents] of var set of 1..NombreDeReunionsParAgent:", key, "=\n", "[")
+            keys = pb[key]
+            for i in range(0, len(keys)-1):
+                elem = keys[i]
                 sys.stdout.write("{")
-                for e in elem:
-                    sys.stdout.write(str(e))
+                for e in range(0,len(elem)-1):
+                    sys.stdout.write(str(elem[e]))
                     sys.stdout.write(",")
-                print "}"
-            print "]"
+                sys.stdout.write(str(elem[len(elem)-1]))
+                print("},")
+            elem = keys[len(keys)-1]
+            sys.stdout.write("{")
+            for e in range(0,len(elem)-1):
+                sys.stdout.write(str(elem[e]))
+                sys.stdout.write(",")
+            sys.stdout.write(str(elem[len(elem)-1]))
+            print("}\n];")
