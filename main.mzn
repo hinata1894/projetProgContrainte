@@ -15,9 +15,8 @@ constraint int_set_channel(plageDeTempsParReunions, reunionsParPlageDeTemps);
 
 constraint partition_set(reunionsParPlageDeTemps, 0..NombreDeReunions);
 
+%On ne met pas les réunions sur la même plage horaire si un même agent doit y assister
 constraint forall(agent in AGENTS, reuParAg in REUNIONS_PAR_AGENTS where reuParAg > 1)
   (plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg-1]] != plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]);
 
 solve satisfy;
-
-%output[show(plageDeTempsParReunions)];
