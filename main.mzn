@@ -5,16 +5,19 @@ set of int : AGENTS = 1..NombreDAgents;
 set of int : REUNIONS_PAR_AGENTS = 1..NombreDeReunionsParAgent;
 set of int : PLAGE_TEMPS = 1..TaillePlageDeTemps;
 
-array [PLAGE_TEMPS] of var set of REUNIONS : reunions;
+array [PLAGE_TEMPS] of var set of 0..NombreDeReunions : reunionsParPlageDeTemps;
+
+array[0..NombreDeReunions] of var PLAGE_TEMPS: plageDeTempsParReunions;
+constraint int_set_channel(plageDeTempsParReunions, reunionsParPlageDeTemps);
 
 %array [1..NombreDeReunions, 1..NombreDeReunions] of 0..MaxTempsDeDeplacement: TempsDeDeplacement =
 %array [1..NombreDAgents, 1..NombreDeReunionsParAgent] of 0..NombreDeReunions: ReunionsParAgent =
 
-constraint partition_set(reunions, REUNIONS);
+constraint partition_set(reunionsParPlageDeTemps, 0..NombreDeReunions);
 
-%briser les symétries
-constraint forall(p in PLAGE_TEMPS where  p > 1)(reunions[p-1] < reunions[p]);
-
-constraint sum(p in PLAGE_TEMPS where  p > 1)(TempsDeDeplacement[reunions[p-1],reunions[p]]+1 <= TaillePlageDeTemps);
+constraint forall(agent in AGENTS, reuParAg in REUNIONS_PAR_AGENTS where reuParAg > 1)
+  (plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg-1]] != plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]);
 
 solve satisfy;
+
+%output[show(plageDeTempsParReunions)];
