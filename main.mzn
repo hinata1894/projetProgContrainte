@@ -5,13 +5,12 @@ set of int : AGENTS = 1..NombreDAgents;
 set of int : REUNIONS_PAR_AGENTS = 1..NombreDeReunionsParAgent;
 set of int : PLAGE_TEMPS = 1..TaillePlageDeTemps;
 
+%Réunions correspondant à une plage de temps
 array [PLAGE_TEMPS] of var set of REUNIONS : reunionsParPlageDeTemps;
 
+%Plage de temps sur laquel est placer une réunion
 array[REUNIONS] of var PLAGE_TEMPS: plageDeTempsParReunions;
 constraint int_set_channel(plageDeTempsParReunions, reunionsParPlageDeTemps);
-
-%array [1..NombreDeReunions, 1..NombreDeReunions] of 0..MaxTempsDeDeplacement: TempsDeDeplacement =
-%array [1..NombreDAgents, 1..NombreDeReunionsParAgent] of 0..NombreDeReunions: ReunionsParAgent =
 
 constraint partition_set(reunionsParPlageDeTemps, REUNIONS);
 
