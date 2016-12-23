@@ -1,4 +1,4 @@
-include "tests/probleme0.mzn";
+include "tests/probleme26.mzn";
 
 set of int : REUNIONS = 0..NombreDeReunions-1;
 set of int : AGENTS = 1..NombreDAgents;
@@ -20,6 +20,6 @@ constraint forall(i in 1..NombreDeReunions-1, agent in AGENTS, reuParAg in REUNI
 
 %Contrainte sur les temps de déplacement
 constraint forall(agent in AGENTS)(sum(reuParAg in REUNIONS_PAR_AGENTS where reuParAg > 1)
-  (TempsDeDeplacement[plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg-1]], plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]]+1) <= TaillePlageDeTemps);
+  (TempsDeDeplacement[plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg-1]], plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]])+NombreDeReunionsParAgent <= TaillePlageDeTemps);
 
 solve satisfy;
