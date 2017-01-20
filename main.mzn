@@ -19,7 +19,10 @@ constraint forall(i in REUNIONS_PAR_AGENTS, agent in AGENTS, reuParAg in REUNION
   (plageDeTempsParReunions[ReunionsParAgent[agent, i]] != plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]);
 
 %Contrainte sur les temps de déplacement
-constraint forall(agent in AGENTS)(sum(reuParAg in REUNIONS_PAR_AGENTS where reuParAg > 1)
-  (TempsDeDeplacement[plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg-1]], plageDeTempsParReunions[ReunionsParAgent[agent, reuParAg]]])+NombreDeReunionsParAgent <= TaillePlageDeTemps);
+constraint forall(agent in AGENTS, r in REUNIONS_PAR_AGENTS, r2 in REUNIONS_PAR_AGENTS)(sum(reu1 in REUNIONS_PAR_AGENTS, reu2 in REUNIONS_PAR_AGENTS)
+  (if(plageDeTempsParReunions[reu1] +1 = plageDeTempsParReunions[reu2]  % si la reunion 1 (reu1) est sur la plage qui suit celle de la réunion 2 (reu2)
+  /\ reu1 = ReunionsParAgent[agent, r] /\ reu2 = ReunionsParAgent[agent, r2]) % et si reu1 et reu2 font partie des reunions que l'agent doit suivre
+  then TempsDeDeplacement[reu2,reu1] else 0 endif) % alors on ajoute le temps de déplacement de reu2 vers reu1 à la somme
+  +NombreDeReunionsParAgent <= TaillePlageDeTemps); % on ajoute 1h par réunion suivit par l'agent et on verifie que la somme est inférieure au temps maximum
 
 solve satisfy;
